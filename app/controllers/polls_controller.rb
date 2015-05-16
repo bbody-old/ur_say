@@ -29,6 +29,7 @@ class PollsController < ApplicationController
   # POST /polls.json
   def create
     @poll = Poll.new(poll_params)
+    @poll.user = current_user
 
     respond_to do |format|
       if @poll.save
