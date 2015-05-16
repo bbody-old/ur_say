@@ -1,6 +1,5 @@
-<h1>Editing poll</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @poll %> |
-<%= link_to 'Back', polls_path %>
+<%- model_class = Poll -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => Poll %></h1>
+</div>
+<%= render :partial => 'form' %>
