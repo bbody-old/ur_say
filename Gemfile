@@ -49,3 +49,6 @@ gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'validates_formatting_of'
 gem 'tzinfo-data'
+gem 'telstra_smsaus', '~> 1.0'
+
+gem "font-awesome-rails"

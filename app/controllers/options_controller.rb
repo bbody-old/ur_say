@@ -69,6 +69,6 @@ class OptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def option_params
-      params.require(:option).permit(:poll_id, :title, :poll_id)
+      params.require(:option).permit(:poll_id, :title, :poll_id, :vote, :poll)
     end
 end

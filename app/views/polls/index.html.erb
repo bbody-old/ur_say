@@ -1,38 +1,88 @@
-<%- model_class = Poll -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => Poll %></h1>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th><%= model_class.human_attribute_name(:question) %></th>
-      <th><%= model_class.human_attribute_name(:subtext) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @polls.each do |poll| %>
-      <tr>
-        <td><%= poll.id %></td>
-        <td><%= poll.question %></td>
-        <td><%= poll.subtext %></td>
-        <td><%=l poll.created_at, format: :long %></td>
-        <td>
-          <%= link_to poll_path(poll), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-            <%= glyph 'info-sign' %>
-            <%= glyph 'pencil' %>
-          <%- end -%>
-          <%= link_to poll_path(poll), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
-            <%= glyph 'remove' %>
-          <%- end -%>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% content_for :page_title do %>Dashboard<% end %>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_poll_path,
-            :class => 'btn btn-primary' %>
+                    <% @polls = Poll.where(user_id: current_user).where("end_date > ?", Date.today) %>
+                    <% @polls.each do |poll| %>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> <%= link_to poll.question, poll %>
+                            </div>
+                            <div class="panel-body">
+                                <%= poll.subtext %>
+                                <div id="morris-donut-chart"></div>
+                                <span class="lead">Total votes: <%= poll.votes %></span>
+                            </div>
+                            <script type="text/javascript">
+                                var ls = [];
+                                <% poll.options.each do |option| %>
+                                    ls.push({label: "<%= option.title %>", value: <%= option.votes %>});
+                                <% end %>
+
+                                Morris.Donut({
+                                    element: 'morris-donut-chart',
+                                    data: ls,
+                                    resize: true
+                                });
+                            </script>
+                        </div>
+                    <% end %>
+                    
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-edit fa-fw"></i> New Poll
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <% @poll = Poll.new %>
+                            <%= render partial: "polls/form" %>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-history fa-fw"></i> Past Polls
+                        </div>
+                        <div class="panel-body">
+                            <% history = Poll.where(user_id: current_user).where("end_date < ?", Date.today) %>
+                            <% if history.length > 0 %>
+                                <table class="table table-striped">
+                                <thead>
+                                    <th>Question</th>
+                                    <th>Votes</th>
+                                    <th>Dates</th>
+                                </thead>
+                                <tbody>
+                                    <% history.each do |poll| %>
+                                        <tr>
+                                            <td><%= poll.question %></td>
+                                            <td><%= poll.votes %></td>
+                                            <td><%= poll.created_at %> - <%= poll.end_date %></td>
+                                        <tr/>
+                                    <% end %>
+                                </tbody>
+                                </table>
+                            <% else %>
+                                <p>No previous polls</p>
+                            <% end %>
+                        </div>
+                    </div>
+                    
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i>Ur Say</i> Copywright © <%= Time.now.year %>
+                        </div>
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>

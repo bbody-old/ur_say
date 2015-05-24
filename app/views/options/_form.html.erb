@@ -1,9 +1,6 @@
 <%= form_for @option, :html => { :class => 'form-horizontal form-model' } do |f| %>
-  <div class="form-group">
-    <%= f.label :title, :class => 'control-label col-md-2' %>
-    <div class="col-md-10">
-      <%= f.text_field :title, :class => 'text-field form-control' %>
-    </div>
+  <div class="form-inline">
+    <%= f.text_field :title, class: 'form-control', placeholder: "Option Title" %>
   </div>
 
   <div class="form-group">
@@ -14,3 +11,5 @@
     </div>
   </div>
 <% end %>
+
+

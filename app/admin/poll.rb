@@ -1,5 +1,5 @@
 ActiveAdmin.register Poll do
-  permit_params :question, :subtext
+  permit_params :question, :subtext, :end_date
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

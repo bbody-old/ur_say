@@ -1,7 +1,7 @@
 class PollsController < ApplicationController
 
   #->Prelang (scaffolding:rails/scope_to_user)
-  before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy]
+  before_filter :require_user_signed_in, only: [:index, :show, :new, :edit, :create, :update, :destroy]
 
   before_action :set_poll, only: [:show, :edit, :update, :destroy]
 

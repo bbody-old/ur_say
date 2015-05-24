@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
+  get 'pages/home'
+
+  get 'pages/about'
+
+  get 'pages/help'
+
+  get 'pages/contact'
+
+  authenticated do
+    root to: 'polls#index', as: :authenticated
+  end
+
+  unauthenticated do
+    root :to => redirect('/home.html')
+  end
+
   resources :polls
 
   resources :options
