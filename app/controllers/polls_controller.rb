@@ -59,9 +59,10 @@ class PollsController < ApplicationController
   # DELETE /polls/1
   # DELETE /polls/1.json
   def destroy
-    @poll.destroy
+    @poll.end_date = Date.today
+    @poll.save!
     respond_to do |format|
-      format.html { redirect_to polls_url, notice: 'Poll was successfully destroyed.' }
+      format.html { redirect_to poll_url, notice: 'Poll was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

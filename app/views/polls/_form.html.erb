@@ -10,6 +10,10 @@
         <p class="help-block">(Optional) Information to clarify the question.</p>
       </div>
       <div class="form-group">
+        <%= f.label :end_date %>
+        <%= f.date_select :end_date, class: 'form-control' %>
+      </div>
+      <div class="form-group">
         <%= f.submit nil, :class => 'btn btn-default' %>
         <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 polls_path, :class => 'btn btn-default' %>

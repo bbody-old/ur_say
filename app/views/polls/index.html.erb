@@ -14,6 +14,7 @@
                                 <div id="morris-donut-chart"></div>
                                 <span class="lead">Total votes: <%= poll.votes %></span>
                             </div>
+
                             <script type="text/javascript">
                                 var ls = [];
                                 <% poll.options.each do |option| %>
@@ -48,7 +49,7 @@
                             <i class="fa fa-history fa-fw"></i> Past Polls
                         </div>
                         <div class="panel-body">
-                            <% history = Poll.where(user_id: current_user).where("end_date < ?", Date.today) %>
+                            <% history = Poll.where(user_id: current_user).where("end_date =< ?", Date.today) %>
                             <% if history.length > 0 %>
                                 <table class="table table-striped">
                                 <thead>
