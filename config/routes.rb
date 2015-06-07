@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   resources :polls
 
-  resources :options
+  match '/polls-history' => 'polls#history', :as => :polls_history, via: [:get]
 
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", passwords: "users/passwords"}, skip: [:sessions, :registrations]
   devise_for :admin_users, ActiveAdmin::Devise.config
