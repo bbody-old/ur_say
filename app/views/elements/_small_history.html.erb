@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-history fa-fw"></i> Past Polls
+    </div>
+    <div class="panel-body">
+        <% history = Poll.where(user_id: current_user).where("end_date < ?", Date.today) %>
+        <% if (not history.nil?) and (history.length > 0) %>
+            <table class="table table-striped">
+            <thead>
+                <th>Question</th>
+                <th>Votes</th>
+                <th>Dates</th>
+            </thead>
+            <tbody>
+                <% history.each do |poll| %>
+                    <tr>
+                        <td><%= link_to poll.question, poll %></td>
+                        <td><%= poll.votes %></td>
+                        <td><%= poll.end_date.to_formatted_s(:long_ordinal) %></td>
+                    <tr/>
+                <% end %>
+            </tbody>
+            </table>
+        <% else %>
+            <p>No previous polls</p>
+        <% end %>
+    </div>
+</div>

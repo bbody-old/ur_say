@@ -49,13 +49,10 @@ gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'validates_formatting_of'
 gem 'tzinfo-data'
-gem 'telstra_smsaus', '~> 1.0'
+gem 'telstra_smsaus', '~> 1.2'
 
 gem "font-awesome-rails"
 
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-bundler', '~> 1.1.2'
-gem 'capistrano-rails', '~> 1.1.1'
-
-# Add this if you're using rbenv
-gem 'capistrano-rbenv', github: "capistrano/rbenv"
+gem 'bootstrap-datepicker-rails', :require => 'bootstrap-datepicker-rails',
+                              :git => 'git://github.com/Nerian/bootstrap-datepicker-rails.git'
+                              
