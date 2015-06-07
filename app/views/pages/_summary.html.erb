@@ -1,0 +1,12 @@
+<div class="col-lg-4">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	        <%= @title %>
+	    </div>
+	    <div class="panel-body">
+	    	<%= image_tag @image, class: "center-block img-responsive" %>
+	        <p class="lead text-center"><%= @brand %></p>
+	        <p><%= @text %> <%= link_to @brand, @link %>.</p>
+	    </div>
+	</div>
+</div>

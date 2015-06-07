@@ -37,14 +37,18 @@ class PollsController < ApplicationController
 
     @poll.save!
 
+    @survey_takers = SurveyTaker.all
 
     yes = Option.new(title: "Yes", votes: 0, poll: @poll)
     yes.save!
 
     no = Option.new(title: "No", votes: 0, poll: @poll)
+
+    no = Option.new(title: "No reply", votes: @survey_takers.count, poll: @poll)
+
     no.save!
 
-    @survey_takers = SurveyTaker.all
+    
     resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
     token = JSON.parse(resp)["access_token"]
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}

@@ -40,15 +40,18 @@
 			    <!-- /.col-lg-12 -->
 			</div>
 
-	        <%= render partial: "elements/dashboard" %>
+			
+	        	<%= render partial: "elements/dashboard" %>
 	    <% end %>
 
         
         	<%= bootstrap_flash %>
             <%= yield %>
-            <div class="col-lg-12">
-		        <%= render partial: "elements/copyright" %>
-		    </div>
+            <% if user_signed_in? %>
+	            <div class="col-lg-12">
+			        <%= render partial: "elements/copyright" %>
+			    </div>
+			<% end %>
         <% if user_signed_in? %>
         	</div>
         	<!-- /#page-wrapper -->
