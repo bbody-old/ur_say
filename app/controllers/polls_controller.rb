@@ -31,6 +31,24 @@ class PollsController < ApplicationController
     @poll = Poll.new(poll_params)
     @poll.user = current_user
 
+    @poll.save!
+
+
+    yes = Option.new(title: "Yes", votes: 0, poll: @poll)
+    yes.save!
+
+    no = Option.new(title: "No", votes: 0, poll: @poll)
+    no.save!
+
+    @survey_takers = SurveyTaker.all
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    token = JSON.parse(resp)["access_token"]
+    header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
+
+    @survey_takers.each do |survey_taker|
+      RestClient.post "https://staging.api.telstra.com/v1/sms/messages", {to: survey_taker.number, body: @poll.question}.to_json, header
+    end
+
     respond_to do |format|
       if @poll.save
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
@@ -75,6 +93,6 @@ class PollsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def poll_params
-      params.require(:poll).permit(:user_id, :user_id, :question, :subtext)
+      params.require(:poll).permit(:user_id, :user_id, :question, :subtext, :end_date, :poll, :poll_id)
     end
 end

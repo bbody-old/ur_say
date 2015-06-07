@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :survey_takers
+
   get 'pages/home'
 
   get 'pages/about'

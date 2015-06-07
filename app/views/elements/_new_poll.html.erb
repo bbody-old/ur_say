@@ -1,0 +1,11 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-edit fa-fw"></i> New Poll
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        <% @poll = Poll.new %>
+        <%= render partial: "polls/form" %>
+    </div>
+    <!-- /.panel-body -->
+</div>
