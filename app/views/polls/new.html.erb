@@ -1,6 +1,33 @@
 <%- model_class = Poll -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => Poll %></h1>
-</div>
-<%= render :partial => 'form' %>
 
+<% content_for :page_title do %>New Poll<% end %>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-8">
+        <%= render partial: 'elements/new_poll' %>
+    </div>
+    <!-- /.col-lg-8 -->
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+		    <div class="panel-heading">
+		        <i class="fa fa-book fa-fw"></i> Tips
+		    </div>
+		    <!-- /.panel-heading -->
+		    <div class="panel-body">
+		        <p>A poorly phrased question can lead to confusion and incorrect answers. So here are some tips:</p>
+		        <ul>
+		        	<li>Unambiguous yes or no reply</li>
+		        	<li>Clear and conscise phrasing</li>
+		        	<li>A Yes/No question requires a modal verb (e.g. can, will, etc), be, do or have</li>
+		        	<li>Depending on the way you phrase a question, the answers people give can change. For example:</li>
+		        	<ul>
+		        		<li>e.g. Did you have a bad experience?</li>
+		        		<li>e.g. Did you have a good experience?</li>
+		        	</ul>
+		        </ul>
+		        <span class="lead">If you have any questions feel free to contact us!</span>
+		    </div>
+		    <!-- /.panel-body -->
+		</div>
+    </div><!-- /.col-lg-4 -->
+<!-- /.row -->

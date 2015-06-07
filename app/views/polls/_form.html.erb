@@ -1,17 +1,38 @@
-
-    <%= form_for @poll, :html => { :class => 'form-horizontal form-model' } do |f| %>
+<div class="row">
+  <div class="col-lg-12">
+    <%= form_for @poll do |f| %>
       <div class="form-group">
         <%= f.label :question %>
         <%= f.text_area :question, class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= f.label :subtext %>
+        <%= f.label "Description" %>
         <%= f.text_area :subtext, class: 'form-control' %>
-        <p class="help-block">(Optional) Information to clarify the question.</p>
+        <p class="help-block">(Optional) Not sent to clients.</p>
       </div>
+      <div class="form-group">
+        <%= f.label :end_date %>
+        <%= f.text_field :end_date, class: 'datetimepicker form-control' %>
+      </div>
+
       <div class="form-group">
         <%= f.submit nil, :class => 'btn btn-default' %>
         <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 polls_path, :class => 'btn btn-default' %>
-      </div>
+      </div>      
     <% end %>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#poll_end_date').datepicker({
+      daysOfWeekDisabled: "0,6",
+      datesDisabled: ['06/06/2015', '06/21/2015'],
+      autoclose: true,
+      todayHighlight: true
+    });
+  });
+</script>

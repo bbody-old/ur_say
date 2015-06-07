@@ -1,0 +1,29 @@
+<% @polls = Poll.where(user_id: current_user).where("end_date > ?", Date.today) %>
+<% @polls.each do |poll| %>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> <%= link_to poll.question, poll %>
+        </div>
+        <div class="panel-body">
+            <%= poll.subtext %>
+            <% if poll.votes > 0 %>
+                <div id="morris-donut-chart<%= poll.id %>"></div>
+                <span class="lead">Total votes: <%= poll.votes %></span>
+                <script type="text/javascript">
+                    var ls = [];
+                    <% poll.options.each do |option| %>
+                        ls.push({label: "<%= option.title %>", value: <%= option.votes %>});
+                    <% end %>
+
+                    Morris.Donut({
+                        element: 'morris-donut-chart<%= poll.id %>',
+                        data: ls,
+                        resize: true
+                    });
+                </script>
+            <% else %>
+                <p>No votes have been received</p>
+            <% end %>
+        </div>
+    </div>
+<% end %>

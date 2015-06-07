@@ -3,31 +3,49 @@
   <%= @poll.question %>
 <% end %>
 
-<div class="row">
-  <span class="lead"><%= @poll.subtext %></span>
-</div>
-
-<div class="row">
-  <% @poll.options.each do |option| %>
-    <div class="row">
-      <h2><%= option.title %></h2>
-    </div>
-
-  <% end %>
-</div>
-
-<div class="row">
-  <div class="form-group">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
+<% if user_signed_in? %>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> <%= link_to @poll.question, @poll %>
+        </div>
+        <div class="panel-body">
+            <%= @poll.subtext %>
+            <div id="morris-donut-chart"></div>
+            <span class="lead">Total votes: <%= @poll.votes %></span>
+        </div>
+        <div class="panel-footer">
+            <%= link_to t('.back', :default => t("helpers.links.back")),
               polls_path, :class => 'btn btn-default'  %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_poll_path(@poll), :class => 'btn btn-default' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+  <%= link_to "End Poll",
               poll_path(@poll),
               :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure you want to end ?')) },
               :class => 'btn btn-danger' %>
-</div>
-</div>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="clearfix"></div>
+        </div>
 
+
+        <script type="text/javascript">
+            var ls = [];
+            <% @poll.options.each do |option| %>
+                ls.push({label: "<%= option.title %>", value: <%= option.votes %>});
+            <% end %>
+
+            Morris.Donut({
+                element: 'morris-donut-chart',
+                data: ls,
+                resize: true
+            });
+        </script>
+    </div>
+    </div>
+<% else %>
+
+
+<% end %>
 

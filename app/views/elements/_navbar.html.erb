@@ -61,51 +61,7 @@
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <% @polls = Poll.where(user_id: current_user).take(3) %>
-                        <% @polls.each do |poll| %>
-                            <li>
-                                <%= link_to(poll) do %>
-                                    <div>
-                                        <p>
-                                            <strong><%= poll.question %></strong>
-                                            <span class="pull-right text-muted"><%= days_left poll.end_date %></span>
-                                        </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <%= percentage poll.end_date, poll.created_at %>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% end %>
-                            </li>
-                            
-                        <% end %>
-
-                        <% if @polls.length == 0 %>
-                            <li>
-                                <div class="text-center">
-                                    <p>
-                                        <strong>No polls have been created</strong>
-                                    </p>
-                                </div>
-                            </li>
-                        <% end %>
-                        
-                        <li class="divider"></li>
-                        <li>
-                            <%= link_to(root_url, class: "text-center") do %>
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            <% end %>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
-                <!-- /.dropdown -->
+                
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -114,10 +70,8 @@
                         <li>
                             <%= link_to raw('<i class="fa fa-user fa-fw"></i> User Profile'), edit_user_registration_path %>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li> 
                         <li class="divider"></li>
-                            <%= link_to raw('<i class="fa fa-sign-out fa-fw"></i> Logout'), destroy_user_session_path %>
+                            <%= link_to raw('<i class="fa fa-sign-out fa-fw"></i> Logout'), destroy_user_session_path, method: :delete %>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -141,7 +95,17 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <%= link_to raw('<i class="fa fa-dashboard fa-fw"></i> Dashboard'), root_url %>
+                            <%= link_to raw('<i class="fa fa-dashboard fa-fw"></i> Current Polls'), root_url %>
+                        </li>
+                        <li>
+                        <%= link_to raw('<i class="fa fa-history fa-fw"></i> Past Polls'), polls_history_url %>
+                        </li>
+                        <li>
+                        <%= link_to raw('<i class="fa fa-dollar fa-fw"></i> Billings'), root_url %>
+                        </li>
+
+                        <li>
+                        <%= link_to raw('<i class="fa fa-info fa-fw"></i> About'), about_url %>
                         </li>
                     </ul>
                 </div>

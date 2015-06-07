@@ -1,88 +1,13 @@
-<% content_for :page_title do %>Dashboard<% end %>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-8">
+<% content_for :page_title do %>Current Polls<% end %>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-8">
+            <%= render partial: "polls/current_polls" %>
+        </div>
+        <!-- /.col-lg-8 -->
+        <div class="col-lg-4">
+            <%= render partial: "elements/new_poll" %>
+            <%= render partial: "elements/small_history" %>
+        </div><!-- /.col-lg-4 -->
+    <!-- /.row -->
 
-                    <% @polls = Poll.where(user_id: current_user).where("end_date > ?", Date.today) %>
-                    <% @polls.each do |poll| %>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-bar-chart-o fa-fw"></i> <%= link_to poll.question, poll %>
-                            </div>
-                            <div class="panel-body">
-                                <%= poll.subtext %>
-                                <div id="morris-donut-chart"></div>
-                                <span class="lead">Total votes: <%= poll.votes %></span>
-                            </div>
-                            <script type="text/javascript">
-                                var ls = [];
-                                <% poll.options.each do |option| %>
-                                    ls.push({label: "<%= option.title %>", value: <%= option.votes %>});
-                                <% end %>
-
-                                Morris.Donut({
-                                    element: 'morris-donut-chart',
-                                    data: ls,
-                                    resize: true
-                                });
-                            </script>
-                        </div>
-                    <% end %>
-                    
-                </div>
-                <!-- /.col-lg-8 -->
-                <div class="col-lg-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-edit fa-fw"></i> New Poll
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <% @poll = Poll.new %>
-                            <%= render partial: "polls/form" %>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-history fa-fw"></i> Past Polls
-                        </div>
-                        <div class="panel-body">
-                            <% history = Poll.where(user_id: current_user).where("end_date < ?", Date.today) %>
-                            <% if history.length > 0 %>
-                                <table class="table table-striped">
-                                <thead>
-                                    <th>Question</th>
-                                    <th>Votes</th>
-                                    <th>Dates</th>
-                                </thead>
-                                <tbody>
-                                    <% history.each do |poll| %>
-                                        <tr>
-                                            <td><%= poll.question %></td>
-                                            <td><%= poll.votes %></td>
-                                            <td><%= poll.created_at %> - <%= poll.end_date %></td>
-                                        <tr/>
-                                    <% end %>
-                                </tbody>
-                                </table>
-                            <% else %>
-                                <p>No previous polls</p>
-                            <% end %>
-                        </div>
-                    </div>
-                    
-                <!-- /.col-lg-4 -->
-            </div>
-            <!-- /.row -->
-
-            <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i>Ur Say</i> Copywright © <%= Time.now.year %>
-                        </div>
-
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>

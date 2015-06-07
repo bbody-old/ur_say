@@ -1,2 +1,52 @@
-<h1>Pages#about</h1>
-<p>Find me in app/views/pages/about.html.erb</p>
+<% content_for :page_title do %>How Ur Say was built<% end %>
+
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	        Ur Say is not officially affiliated or endorsed with any of the below companies/organisations/products.
+	    </div>
+
+	    <!-- /.panel-body -->
+	</div>
+    <!-- /.row -->
+    <div class="row">
+    	<%= generate_summary "Contest", "http://app.crowdsourcehire.com/images/logo.png", "API Developer Contest", "Ur Say was developed for", "http://app.crowdsourcehire.com/challenge/muru-D/index" %>
+    	<%= generate_summary "Website Hosting", "http://app.crowdsourcehire.com/challenge/muru-D/images/softlayer_logo.png", "Softlayer", "Ur Say is hosted on", "http://www.softlayer.com/" %>
+
+    	<%= generate_summary "SMS API", "http://www.crowdsourcehire.com/images/img-powerd1.png", "Telstra SMS API", "Ur Say sends SMS's using the", "https://dev.telstra.com/content/sms-api-0" %>
+    </div>
+
+    <div class="row">
+    	<%= generate_summary "Website backend", "/img/rails.jpg", "Ruby on Rails", "Website backend was developed using ", "http://rubyonrails.org/" %>
+
+    	<%= generate_summary "Website frontend framework", "/img/bootstrap.jpg", "Twitter Bootstrap 3", "Website frontend was developed using", "http://getbootstrap.com/" %>
+
+    	<%= generate_summary "Javascript library", "/img/jquery.png", "jQuery", "Website development was aided with Javascript library called", "https://jquery.com/" %>
+        	
+    </div>
+
+    <div class="row">
+    	<%= generate_summary "Contestant", "/img/brendon.png", "Brendon Body", "Ur Say was developed, designed, managed by just", "http://www.brendonbody.com/" %>
+
+    	<%= generate_summary "Project management", "/img/trello.jpg", "Trello", "Ur Say was managed using the project management tool", "https://trello.com/" %>
+
+    	<%= generate_summary "Code editor", "/img/sublime.jpg", "Sublime Text 3", "Ur Say was coded using ", "http://www.sublimetext.com/" %>
+    </div>
+
+    <div class="row">
+    	<%= generate_summary "Customer Dashboard Template", "/img/website-demo-2.png", "SB Admin 2 Bootstrap Template", "Customer dashboard was built with the", "http://startbootstrap.com/template-overviews/sb-admin-2/" %>
+
+    	<%= generate_summary "Landing Page Template", "/img/landing.png", "Flatty Bootstrap Template", "Landing page was built with the", "http://www.bootstrapzero.com/bootstrap-template/flatty" %>
+    	
+    	<%= generate_summary "Tool Icons", "/img/font-awesome.png", "Font Awesome", "Tool icons come from the library ", "http://fortawesome.github.io/Font-Awesome/icons/" %>
+
+    </div>
+    <div class="row">
+    	<%= generate_summary "Logo", "ursay.png", "Hipster Logo Generator", "Logo was created using", "http://www.hipsterlogogenerator.com/" %>
+
+    	<%= generate_summary "Phone Screenshot Wrapper", "/img/phone-demo.png", "MockUPhone", "Phone screenshot wrapper was created using", "http://mockuphone.com/" %>
+
+    	<%= generate_summary "General icons", "/img/mobile.png", "Icon Finder", "General icons are from", "http://iconfinder.com/" %>
+    </div>
+    <div class="row">
+    </div>
+    <!-- /.row -->

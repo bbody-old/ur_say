@@ -11,6 +11,10 @@ class PollsController < ApplicationController
     @polls = Poll.all
   end
 
+  def history
+    @polls = Poll.all
+  end
+
   # GET /polls/1
   # GET /polls/1.json
   def show
@@ -30,6 +34,28 @@ class PollsController < ApplicationController
   def create
     @poll = Poll.new(poll_params)
     @poll.user = current_user
+
+    @poll.save!
+
+    @survey_takers = SurveyTaker.all
+
+    yes = Option.new(title: "Yes", votes: 0, poll: @poll)
+    yes.save!
+
+    no = Option.new(title: "No", votes: 0, poll: @poll)
+
+    no = Option.new(title: "No reply", votes: @survey_takers.count, poll: @poll)
+
+    no.save!
+
+    
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    token = JSON.parse(resp)["access_token"]
+    header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
+
+    @survey_takers.each do |survey_taker|
+      RestClient.post "https://staging.api.telstra.com/v1/sms/messages", {to: survey_taker.number, body: @poll.question}.to_json, header
+    end
 
     respond_to do |format|
       if @poll.save
@@ -59,9 +85,10 @@ class PollsController < ApplicationController
   # DELETE /polls/1
   # DELETE /polls/1.json
   def destroy
-    @poll.destroy
+    @poll.end_date = Date.today
+    @poll.save!
     respond_to do |format|
-      format.html { redirect_to polls_url, notice: 'Poll was successfully destroyed.' }
+      format.html { redirect_to poll_url, notice: 'Poll was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -74,6 +101,6 @@ class PollsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def poll_params
-      params.require(:poll).permit(:user_id, :user_id, :question, :subtext)
+      params.require(:poll).permit(:user_id, :user_id, :question, :subtext, :end_date, :poll, :poll_id)
     end
 end
