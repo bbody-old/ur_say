@@ -43,6 +43,14 @@ GIT
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
 
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 8ba1a0e4908cccf20198791aa8f72acc63575589
+  specs:
+    stripe (1.21.0)
+      json (~> 1.8.1)
+      rest-client (~> 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -560,6 +568,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   simple_form
   spring
+  stripe!
   telstra_smsaus (~> 1.2)
   turbolinks
   tzinfo-data
