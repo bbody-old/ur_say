@@ -83,4 +83,4 @@ production:
   encoding: unicode
   database: ur_say_production
   username: postgres
-  password: 1i0xn%(R+_5R4aS
+  password: simple_password
