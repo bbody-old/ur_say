@@ -16,11 +16,12 @@
 #
 
 development:
-  database: ur_say_development
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see rails configuration guide
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  database: ur_say_development
+  username: postgres
+  password: simple_password
+  host: localhost
   pool: 5
 
   # The specified database role being used to connect to postgres.
@@ -82,4 +83,3 @@ production:
   password: simple_password
   host: localhost
   pool: 5
-  encoding: unicode
