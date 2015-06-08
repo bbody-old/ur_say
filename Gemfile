@@ -49,7 +49,7 @@ gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'validates_formatting_of'
 gem 'tzinfo-data'
-gem 'telstra_smsaus', '~> 1.2'
+#gem 'telstra_smsaus', '~> 1.2'
 
 gem "font-awesome-rails"
 
