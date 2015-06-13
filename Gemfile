@@ -61,3 +61,4 @@ gem 'capistrano-rails', '~> 1.1.1'
 
 gem 'capistrano-rbenv', '~> 2.0'
 
+gem 'rest-client', '~> 1.8.0'
