@@ -1,5 +1,5 @@
-ActiveAdmin.register SurveyTaker do
-  permit_params :name, :number, :message_id, :confirmed
+ActiveAdmin.register MessageSent do
+  permit_params :poll, :poll_id, :message_id, :result
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

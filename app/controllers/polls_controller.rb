@@ -20,6 +20,40 @@ class PollsController < ApplicationController
   # GET /polls/1
   # GET /polls/1.json
   def show
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    token = JSON.parse(resp)["access_token"]
+    header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
+    puts "B:"
+    puts @poll.message_sents.count
+    
+    @poll.message_sents.each do |message_sent|
+      if message_sent.result.nil?
+        result = JSON.parse(RestClient.get("https://api.telstra.com/v1/sms/messages/#{message_sent.message_id}/response", header))[0]
+        puts result
+        if result["content"][0] == "1"
+          message_sent.result = 1
+          message_sent.save!
+        elsif result["content"][0] == "2"
+          message_sent.result = 2
+          message_sent.save!
+        elsif message_sent.result = "3"
+          # unsub
+        end
+      end
+    end
+    puts ":B"
+    yes = Option.where(poll: @poll, title: "Yes").first
+    yes.votes = MessageSent.where(poll: @poll, result: 1).count
+    yes.save!
+
+    no = Option.where(poll: @poll, title: "No").first
+    no.votes = MessageSent.where(poll: @poll, result: 2).count
+    no.save!
+
+    no_reply = Option.where(poll: @poll, title: "No reply").first
+    no_reply.votes = MessageSent.where(poll: @poll).count - no.votes - yes.votes
+    no_reply.save!
+
   end
 
   # GET /polls/new
@@ -37,6 +71,8 @@ class PollsController < ApplicationController
     @poll = Poll.new(poll_params)
     @poll.user = current_user
 
+    @poll.end_date = Date.today + 2
+
     @poll.save!
 
     @survey_takers = SurveyTaker.all
@@ -45,10 +81,10 @@ class PollsController < ApplicationController
     yes.save!
 
     no = Option.new(title: "No", votes: 0, poll: @poll)
-
-    no = Option.new(title: "No reply", votes: @survey_takers.count, poll: @poll)
-
     no.save!
+
+    no_reply = Option.new(title: "No reply", votes: SurveyTaker.where(confirmed: 1).count, poll: @poll)
+    no_reply.save!
 
     
     resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
@@ -56,7 +92,31 @@ class PollsController < ApplicationController
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
 
     @survey_takers.each do |survey_taker|
-      RestClient.post "https://staging.api.telstra.com/v1/sms/messages", {to: survey_taker.number, body: @poll.question}.to_json, header
+      if survey_taker.confirmed == 0
+        result = JSON.parse(RestClient.get("https://api.telstra.com/v1/sms/messages/#{survey_taker.message_id}/response", header))[0]
+        puts "Brendon:"
+        #puts JSON.parse(result)[0]["content"].inspect
+        puts result
+        puts result["content"]
+        
+
+        puts ":Brendon"
+
+        if result["content"][0] == "1"
+          survey_taker.confirmed = 1
+          survey_taker.save!
+        end
+      end
+
+      if survey_taker.confirmed == 1
+        
+
+        result = JSON.parse(RestClient.post "https://staging.api.telstra.com/v1/sms/messages", {to: survey_taker.number, body: @poll.question + " 1=Yes, 2=No, 3=Stop"}.to_json, header)
+        @message_sent = MessageSent.new(poll: @poll, message_id: result["messageId"])
+
+        @message_sent.save!
+
+      end
     end
 
     respond_to do |format|

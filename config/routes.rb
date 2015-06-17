@@ -3,11 +3,13 @@ Rails.application.routes.draw do
 
   get 'pages/home'
 
-   get 'about' => 'pages#about'
+  get 'about' => 'pages#about'
 
   get 'pages/help'
 
   get 'pages/contact'
+
+  #post "survey_takers/callback/"
 
   authenticated do
     root to: 'polls#index', as: :authenticated

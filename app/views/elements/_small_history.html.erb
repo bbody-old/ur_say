@@ -3,7 +3,7 @@
         <i class="fa fa-history fa-fw"></i> <%= link_to "Past Polls", polls_history_url %>
     </div>
     <div class="panel-body">
-        <% history = Poll.where(user_id: current_user).where("end_date < ?", Date.today) %>
+        <% history = Poll.where(user_id: current_user).where("(end_date < ?) OR (end_date = ?)", Date.today, Date.today) %>
         <% if (not history.nil?) and (history.length > 0) %>
             <table class="table table-striped">
             <thead>
