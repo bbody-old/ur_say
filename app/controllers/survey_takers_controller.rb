@@ -9,7 +9,7 @@ class SurveyTakersController < InheritedResources::Base
     @survey_taker = SurveyTaker.new(survey_taker_params)
     @survey_taker.confirmed = 0
 
-    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
     token = JSON.parse(resp)["access_token"]
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
     puts "hello Brendon"
@@ -25,6 +25,16 @@ class SurveyTakersController < InheritedResources::Base
     @survey_taker.message_id = result["messageId"]
 
     @survey_taker.save!
+
+    respond_to do |format|
+      if @survey_taker.update(survey_taker_params)
+        format.html { redirect_to @survey_taker, notice: 'Successfully registered, awaiting verification.' }
+        format.json { render :show, status: :ok, location: @survey_taker }
+      else
+        format.html { render :edit }
+        format.json { render json: @survey_taker.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update

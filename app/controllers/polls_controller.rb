@@ -20,7 +20,7 @@ class PollsController < ApplicationController
   # GET /polls/1
   # GET /polls/1.json
   def show
-    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
     token = JSON.parse(resp)["access_token"]
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
     puts "B:"
@@ -71,7 +71,7 @@ class PollsController < ApplicationController
     @poll = Poll.new(poll_params)
     @poll.user = current_user
 
-    @poll.end_date = Date.today + 2
+    @poll.end_date = (Date.today + 2)
 
     @poll.save!
 
@@ -87,7 +87,7 @@ class PollsController < ApplicationController
     no_reply.save!
 
     
-    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=g29lXBi4IZo0zXkJyeDza9dB1RiQFswa&client_secret=LAqQtlbWhG9EUOM0&grant_type=client_credentials&scope=SMS"
+    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
     token = JSON.parse(resp)["access_token"]
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
 
