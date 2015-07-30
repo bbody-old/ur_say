@@ -57,3 +57,5 @@ gem 'bootstrap-datepicker-rails', :require => 'bootstrap-datepicker-rails', :git
 
 
 gem 'rest-client', '~> 1.8.0'
+
+gem 'puma'
