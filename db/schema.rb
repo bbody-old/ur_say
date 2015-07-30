@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616113154) do
+ActiveRecord::Schema.define(version: 20150626143757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 20150616113154) do
     t.string   "message_id"
     t.integer  "confirmed"
   end
+
+  add_index "survey_takers", ["number"], name: "index_survey_takers_on_number", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

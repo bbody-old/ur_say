@@ -49,7 +49,28 @@ class SurveyTakersController < InheritedResources::Base
     end
   end
 
-  def show
+  def index
+    if params[:number]
+      @survey_takers = SurveyTaker.search(params[:number].to_s)
+      if @survey_takers.first.confirmed == 0
+        resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
+        puts "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
+        token = JSON.parse(resp)["access_token"]
+        header =  {authorization: "Bearer " + token, "Content-Type" => "application/json", "Accept" => "application/json"}
+
+        address = "https://api.telstra.com/v1/sms/messages/"+ @survey_takers.first.message_id + "/response"
+        puts address
+        response = RestClient.get(address, header)
+        result = JSON.parse(response)[0]
+
+        if result["content"][0] == "1"
+          @survey_takers.first.confirmed = 1
+          @survey_takers.first.save!
+        end
+      end
+    else
+      @survey_takers = nil
+    end
   end
 
   # DELETE /polls/1
@@ -62,13 +83,22 @@ class SurveyTakersController < InheritedResources::Base
     end
   end
 
-
-  def callback
-    v = Video.new
-    v.name = params[:video][:name]
-    v.user_id = params[:video][:data][:user_id]
-    v.question_id = params[:video][:data][:question_id]
-    v.save
+  def show
+    @survey_taker = SurveyTaker.find_by_id(params[:id])
+    if @survey_taker.nil? && @survey_taker.confirmed == 0
+      resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
+      token = JSON.parse(resp)["access_token"]
+      header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
+      puts ":::" + @survey_taker.message_id + ":::"
+      response = RestClient.get("https://api.telstra.com/v1/sms/messages/"+ @survey_taker.message_id + "/response", header)
+      @result = JSON.parse(response)[0]
+      puts "Result:" + result
+      puts "----------------------------------------------------------------------"
+      if result["content"][0] == "1"
+        @survey_taker.confirmed = 1
+        @survey_taker.save!
+      end
+    end
   end
 
   private

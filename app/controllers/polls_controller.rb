@@ -87,13 +87,15 @@ class PollsController < ApplicationController
     no_reply.save!
 
     
-    resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
+    resp = RestClient.get("https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS")
     token = JSON.parse(resp)["access_token"]
     header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
 
     @survey_takers.each do |survey_taker|
       if survey_taker.confirmed == 0
-        result = JSON.parse(RestClient.get("https://api.telstra.com/v1/sms/messages/#{survey_taker.message_id}/response", header))[0]
+        puts "ID:" + survey_taker.message_id
+        response = RestClient.get("https://api.telstra.com/v1/sms/messages/"+ survey_taker.message_id + "/response", header)
+        result = JSON.parse(response)[0]
         puts "Brendon:"
         #puts JSON.parse(result)[0]["content"].inspect
         puts result

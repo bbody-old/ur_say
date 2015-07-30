@@ -49,7 +49,7 @@ gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'validates_formatting_of'
 gem 'tzinfo-data'
-#gem 'telstra_smsaus', '~> 1.2'
+gem 'telstra_smsaus', '~> 1.2'
 
 gem "font-awesome-rails"
 
@@ -61,4 +61,4 @@ gem 'capistrano-rails', '~> 1.1.1'
 
 gem 'capistrano-rbenv', '~> 2.0'
 
-gem 'rest-client', '~> 1.8.0'
+#gem 'rest-client', '~> 1.8.0'
