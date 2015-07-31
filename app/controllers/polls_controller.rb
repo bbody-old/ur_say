@@ -28,16 +28,21 @@ class PollsController < ApplicationController
     
     @poll.message_sents.each do |message_sent|
       if message_sent.result.nil?
-        result = JSON.parse(RestClient.get("https://staging.api.telstra.com/v1/sms/messages/#{message_sent.message_id}/response", header))[0]
-        puts result
-        if result["content"][0] == "1"
-          message_sent.result = 1
-          message_sent.save!
-        elsif result["content"][0] == "2"
-          message_sent.result = 2
-          message_sent.save!
-        elsif message_sent.result = "3"
-          # unsub
+        raw = RestClient.get("https://staging.api.telstra.com/v1/sms/messages/#{message_sent.message_id}/response", header){|response, request, result| response }
+        unless raw.nil?
+          result = JSON.parse(raw)[0]
+          unless result.nil?
+            puts result
+            if result["content"][0] == "1"
+              message_sent.result = 1
+              message_sent.save!
+            elsif result["content"][0] == "2"
+              message_sent.result = 2
+              message_sent.save!
+            elsif message_sent.result = "3"
+              # unsub
+            end
+          end
         end
       end
     end
