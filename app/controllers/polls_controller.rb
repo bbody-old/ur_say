@@ -28,7 +28,7 @@ class PollsController < ApplicationController
     
     @poll.message_sents.each do |message_sent|
       if message_sent.result.nil?
-        result = JSON.parse(RestClient.get("https://api.telstra.com/v1/sms/messages/#{message_sent.message_id}/response", header))[0]
+        result = JSON.parse(RestClient.get("https://staging.api.telstra.com/v1/sms/messages/#{message_sent.message_id}/response", header))[0]
         puts result
         if result["content"][0] == "1"
           message_sent.result = 1
@@ -94,7 +94,7 @@ class PollsController < ApplicationController
     @survey_takers.each do |survey_taker|
       if survey_taker.confirmed == 0
         puts "ID:" + survey_taker.message_id
-        response = RestClient.get("https://api.telstra.com/v1/sms/messages/"+ survey_taker.message_id + "/response", header)
+        response = RestClient.get("https://staging.api.telstra.com/v1/sms/messages/"+ survey_taker.message_id + "/response", header)
         result = JSON.parse(response)[0]
         puts "Brendon:"
         #puts JSON.parse(result)[0]["content"].inspect

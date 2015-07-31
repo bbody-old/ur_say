@@ -58,7 +58,7 @@ class SurveyTakersController < InheritedResources::Base
         token = JSON.parse(resp)["access_token"]
         header =  {authorization: "Bearer " + token, "Content-Type" => "application/json", "Accept" => "application/json"}
 
-        address = "https://api.telstra.com/v1/sms/messages/"+ @survey_takers.first.message_id + "/response"
+        address = "https://staging.api.telstra.com/v1/sms/messages/"+ @survey_takers.first.message_id + "/response"
         puts address
         response = RestClient.get(address, header)
         result = JSON.parse(response)[0]
@@ -85,16 +85,16 @@ class SurveyTakersController < InheritedResources::Base
 
   def show
     @survey_taker = SurveyTaker.find_by_id(params[:id])
-    if @survey_taker.nil? && @survey_taker.confirmed == 0
+    if @survey_taker.confirmed == 0
       resp = RestClient.get "https://staging.api.telstra.com/v1/oauth/token?client_id=" + Rails.application.secrets.telstra_public_key + "&client_secret=" + Rails.application.secrets.telstra_private_key + "&grant_type=client_credentials&scope=SMS"
       token = JSON.parse(resp)["access_token"]
       header =  {authorization: "Bearer #{token}", "Content-Type" => "application/json", "Accept" => "application/json"}
       puts ":::" + @survey_taker.message_id + ":::"
-      response = RestClient.get("https://api.telstra.com/v1/sms/messages/"+ @survey_taker.message_id + "/response", header)
-      @result = JSON.parse(response)[0]
-      puts "Result:" + result
+      response = RestClient.get("https://staging.api.telstra.com/v1/sms/messages/"+ @survey_taker.message_id + "/response", header){|response, request, result| response }
+      result = JSON.parse(response)[0]
+      #puts "Result:" + @result
       puts "----------------------------------------------------------------------"
-      if result["content"][0] == "1"
+      if (not result.nil?) && result["content"][0] == "1"
         @survey_taker.confirmed = 1
         @survey_taker.save!
       end
