@@ -2,7 +2,7 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-8">
-            <% @polls = Poll.where(user_id: current_user).where("(end_date < ?) OR (end_date = ?)", Date.today, Date.today) %>
+            <% @polls = Poll.where(user_id: current_user).where("(end_date < ?) OR (end_date = ?)", Date.today, Date.today).order(created_at: :desc) %>
             <% @polls.each do |poll| %>
                 <div class="panel panel-default">
                     <div class="panel-heading">
