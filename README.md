@@ -25,10 +25,10 @@ It was an entry to the CrowSourceHire [API Developer Contest](http://app.crowdso
 
 # Screenshots
 ## Dashboard
-![Dashboard](https://s3-ap-southeast-2.amazonaws.com/bbody-images/github/ur-say/new_poll.png)
+![Dashboard](https://raw.githubusercontent.com/bbody/ur_say/master/screenshots/dashboard.png)
 
 ## Frontpage
-![Front page](https://s3-ap-southeast-2.amazonaws.com/bbody-images/github/ur-say/front_page.png)
+![Front page](https://raw.githubusercontent.com/bbody/ur_say/master/screenshots/frontpage.png)
 
 # How to run
 1. Clone the repository `git clone https://github.com/bbody/ur_say.git`
